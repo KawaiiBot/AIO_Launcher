@@ -36,6 +36,8 @@ class BotThread(threading.Thread):
                 return len(self.client.guilds)
             elif query == "users.count":
                 return len(self.client.users)
+            elif query == "exit":
+                self.client.loop.stop()
             else:
                 return "invalid command"
         except Exception as e:
@@ -67,7 +69,7 @@ if __name__ == "__main__":
         print("Sharding enabled. Validating shard count...")
         if total_shards >= 40 and total_shards % 16 != 0:  # 40 * 2,500 = 100,000 (see: https://github.com/discordapp/discord-api-docs/issues/387)
             print("Bad shard count: total_shards must be a multiple of 16")
-            sys.exit(0)
+            quit()
 
         instances = math.ceil(total_shards / shards_per_client)
         bot.shard_count = total_shards
@@ -98,7 +100,10 @@ if __name__ == "__main__":
             i = input(":: ")
             for shard in shards:
                 print(f"[INSTANCE-{shard.id}]: {shard.execute(i)}")
+            
+            if i == "exit":
+                quit()
     except KeyboardInterrupt:
         for shard in shards:
             shard.client.loop.stop()
-        sys.exit(1)
+        quit()
