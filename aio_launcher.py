@@ -24,7 +24,7 @@ class HelpFormat(HelpFormatter):
 
 
 class BotThread(threading.Thread):
-    def __init__(self, client=None, instance_id=None):
+    def __init__(self, client, instance_id):
         threading.Thread.__init__(self, target=self.run_client)
         self.id = instance_id
         self.client = client
