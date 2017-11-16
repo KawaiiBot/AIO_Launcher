@@ -28,7 +28,6 @@ class BotThread(threading.Thread):
         threading.Thread.__init__(self, target=self.run_client)
         self.id = instance_id
         self.client = client
-        self.daemon = True
         self.start()
 
     def execute(self, query):
@@ -45,18 +44,17 @@ class BotThread(threading.Thread):
     def run_client(self):
         self.client.run(token)
 
-shards_per_client = 20
-total_shards = 128
-
-with open("config.json") as f:
-    data = json.load(f)
-    token = data['token']
-    prefix = data['prefix']
-
-bot = Bot(command_prefix=wmo(prefix), prefix=prefix,
-          pm_help=True, help_attrs=dict(hidden=True), formatter=HelpFormat(), fetch_offline_members=False)
-
 if __name__ == "__main__":
+    shards_per_client = 20
+    total_shards = 128
+
+    with open("config.json") as f:
+        data = json.load(f)
+        token = data["token"]
+        prefix = data["prefix"]
+
+    bot = Bot(command_prefix=wmo(prefix), prefix=prefix,
+              pm_help=True, help_attrs=dict(hidden=True),formatter=HelpFormat(), fetch_offline_members=False)
 
     for file in os.listdir("cogs"):
         if file.endswith(".py"):
@@ -101,4 +99,4 @@ if __name__ == "__main__":
             for shard in shards:
                 print(f"[INSTANCE-{shard.id}]: {shard.execute(i)}")
     except KeyboardInterrupt:
-        sys.exit(0)
+        sys.exit(1)
