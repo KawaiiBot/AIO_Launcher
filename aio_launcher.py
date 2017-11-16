@@ -69,7 +69,7 @@ if __name__ == "__main__":
         print("Sharding enabled. Validating shard count...")
         if total_shards >= 40 and total_shards % 16 != 0:  # 40 * 2,500 = 100,000 (see: https://github.com/discordapp/discord-api-docs/issues/387)
             print("Bad shard count: total_shards must be a multiple of 16")
-            quit()
+            sys.exit(0)
 
         instances = math.ceil(total_shards / shards_per_client)
         bot.shard_count = total_shards
@@ -102,8 +102,8 @@ if __name__ == "__main__":
                 print(f"[INSTANCE-{shard.id}]: {shard.execute(i)}")
             
             if i == "exit":
-                quit()
+                sys.exit(1)
     except KeyboardInterrupt:
         for shard in shards:
             shard.client.loop.stop()
-        quit()
+        sys.exit(1)
