@@ -99,4 +99,6 @@ if __name__ == "__main__":
             for shard in shards:
                 print(f"[INSTANCE-{shard.id}]: {shard.execute(i)}")
     except KeyboardInterrupt:
+        for shard in shards:
+            shard.client.loop.stop()
         sys.exit(1)
