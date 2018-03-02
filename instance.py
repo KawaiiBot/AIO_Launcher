@@ -5,7 +5,6 @@ from datetime import datetime
 import discord
 from discord.ext.commands import when_mentioned_or as wmo
 from discord.ext.commands import AutoShardedBot
-from IPC import interface
 
 
 class Instance:
